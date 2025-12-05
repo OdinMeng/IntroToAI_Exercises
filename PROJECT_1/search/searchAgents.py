@@ -570,12 +570,16 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     # IDEA: Calculate manhattan distance from the nearest pellet and sum it with the
     # manhattan between the nearest pellet and the furthest pellet
 
-    position, foodGrid = state
 
+    position, foodGrid = state
     foodList = foodGrid.asList()
 
     if len(foodList) == 0:
         return 0 
+    
+    if len(foodList) == 1:
+        f = foodList[0]
+        return abs(position[0]-f[0]) + abs(position[1]-f[1])
 
     min_food = float('inf')
     min_food_pos = (-1, -1)
@@ -592,8 +596,6 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
         if dist > max_food:
             max_food = dist
             max_food_pos = food 
-
-    # TODO: somewhat improve it? it should explore less than 7000 nodes in the tricky case
 
     return min_food + abs(min_food_pos[0]-max_food_pos[0]) + abs(min_food_pos[1]-max_food_pos[1])
 
